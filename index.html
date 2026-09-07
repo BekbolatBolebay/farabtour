@@ -241,20 +241,15 @@
        ========================================================================= -->
   <div id="fixed-bg-container" class="fixed top-0 left-0 w-full h-screen z-0 overflow-hidden pointer-events-none">
     
-    <!-- Video Layer 1 (0% - 30% Hero Section: Side Flight in Golden Sky) -->
-    <video id="bg-video-1" class="bg-layer opacity-100 scale-100" muted loop playsinline preload="auto">
-      <source src="video-1.mp4" type="video/mp4" />
+    <!-- Original Continuous Airplane Video (0% - 50% Scroll: Sky Flight -> Cloud Dive) -->
+    <video id="bg-video-plane" class="bg-layer opacity-100 scale-100" muted loop playsinline preload="auto">
+      <source src="0.mp4" type="video/mp4" />
     </video>
 
-    <!-- Video Layer 2 (31% - 60% Stats, Why Us, Tours: Plane Diving into Clouds) -->
-    <video id="bg-video-2" class="bg-layer opacity-0 scale-100" muted loop playsinline preload="auto">
-      <source src="video-2.mp4" type="video/mp4" />
-    </video>
-
-    <!-- Pure White Cloud Whiteout Mist (peaks around 55-60%, then dissolves into Kaaba visual) -->
+    <!-- Pure White Cloud Whiteout Mist (peaks around 48-52%, then dissolves into Kaaba visual) -->
     <div id="bg-cloud-overlay" class="absolute inset-0 bg-white opacity-0 transition-opacity duration-700 pointer-events-none z-[5]"></div>
 
-    <!-- Layer 3: Holy Kaaba Visual (60% - 100% Scroll with gentle fade-in & slow parallax zoom) -->
+    <!-- Layer 3: Holy Kaaba Visual (50% - 100% Scroll with gentle fade-in & slow parallax zoom) -->
     <div id="bg-kaaba-wrap" class="bg-layer opacity-0 scale-100 transition-opacity duration-1000 z-[6]">
       <img id="bg-kaaba-img" src="photo-kaaba.png" alt="Holy Kaaba Mecca Farab Tour" class="w-full h-full object-cover object-center transform transition-transform duration-1000 ease-out" />
       <!-- Dark Emerald & Gold Vignette Overlays -->
@@ -1556,40 +1551,28 @@
     gsap.registerPlugin(ScrollTrigger);
 
     // =========================================================================
-    // BORJOMI-STYLE SYNCHRONIZED VIDEO SCROLL ENGINE (0%-30%, 31%-60%, 61%-100%)
+    // BORJOMI-STYLE SYNCHRONIZED VIDEO SCROLL ENGINE (ORIGINAL 0.MP4)
     // =========================================================================
-    const video1 = document.getElementById('bg-video-1');
-    const video2 = document.getElementById('bg-video-2');
+    const videoPlane = document.getElementById('bg-video-plane');
     const kaabaWrap = document.getElementById('bg-kaaba-wrap');
     const kaabaImg = document.getElementById('bg-kaaba-img');
     const cloudOverlay = document.getElementById('bg-cloud-overlay');
     const heroContent = document.getElementById('hero-content');
 
-    let targetTime1 = 0;
-    let targetTime2 = 0;
-    let isVideo1Ready = false;
-    let isVideo2Ready = false;
+    let targetTimePlane = 0;
+    let isVideoPlaneReady = false;
 
-    if (video1) {
-      video1.addEventListener('loadedmetadata', () => { isVideo1Ready = true; });
-    }
-    if (video2) {
-      video2.addEventListener('loadedmetadata', () => { isVideo2Ready = true; });
+    if (videoPlane) {
+      videoPlane.addEventListener('loadedmetadata', () => { isVideoPlaneReady = true; });
     }
 
     // High performance RAF video scrubber (Zero-lag silky smooth scrubbing)
     let rafActive = false;
     function updateVideoFrame() {
-      if (video1 && isVideo1Ready && video1.duration) {
-        const diff1 = targetTime1 - video1.currentTime;
-        if (Math.abs(diff1) > 0.05) {
-          video1.currentTime += diff1 * 0.35;
-        }
-      }
-      if (video2 && isVideo2Ready && video2.duration) {
-        const diff2 = targetTime2 - video2.currentTime;
-        if (Math.abs(diff2) > 0.05) {
-          video2.currentTime += diff2 * 0.35;
+      if (videoPlane && isVideoPlaneReady && videoPlane.duration) {
+        const diff = targetTimePlane - videoPlane.currentTime;
+        if (Math.abs(diff) > 0.04) {
+          videoPlane.currentTime += diff * 0.4;
         }
       }
       rafActive = false;
@@ -1612,12 +1595,13 @@
         const progress = self.progress; // 0.0 to 1.0
 
         // =====================================================================
-        // PHASE 1: 0% - 22% (Airplane Flight in Golden Sky)
+        // PHASE 1 & 2: 0% - 50% (Airplane Flight -> Bank -> Cloud Dive)
         // =====================================================================
-        if (progress <= 0.22) {
-          const phaseProgress = progress / 0.22;
-          if (video1 && video1.duration) {
-            targetTime1 = phaseProgress * video1.duration;
+        if (progress <= 0.50) {
+          const phaseProgress = progress / 0.50; // 0.0 to 1.0 (maps to 0s - 30s)
+
+          if (videoPlane && videoPlane.duration) {
+            targetTimePlane = phaseProgress * videoPlane.duration;
             requestVideoUpdate();
           }
 
@@ -1628,36 +1612,12 @@
             heroContent.style.pointerEvents = heroAlpha < 0.1 ? 'none' : 'auto';
           }
 
-          video1.style.opacity = '1';
-          video1.style.transform = 'none'; // 100% natural, crisp, unzoomed
-          
-          video2.style.opacity = '0';
-          cloudOverlay.style.opacity = '0';
-          kaabaWrap.style.opacity = '0';
-        }
-        // =====================================================================
-        // PHASE 2: 22% - 50% (Plane Diving into Clouds -> Whiteout Mist)
-        // =====================================================================
-        else if (progress > 0.22 && progress <= 0.50) {
-          const phaseProgress = (progress - 0.22) / 0.28; // 0.0 to 1.0
-
-          if (heroContent) {
-            heroContent.style.opacity = '0';
-            heroContent.style.pointerEvents = 'none';
-          }
-
-          if (video2 && video2.duration) {
-            targetTime2 = phaseProgress * video2.duration;
-            requestVideoUpdate();
-          }
-
-          video1.style.opacity = `${Math.max(0, 1 - phaseProgress * 3)}`;
-          video2.style.opacity = `${Math.min(1, phaseProgress * 3)}`;
-          video2.style.transform = 'none'; // 100% natural, crisp, unzoomed
+          videoPlane.style.opacity = '1';
+          videoPlane.style.transform = 'none';
 
           // Whiteout cloud mist ramp up as airplane dives deep into clouds
-          if (phaseProgress > 0.65) {
-            const mistProgress = (phaseProgress - 0.65) / 0.35;
+          if (phaseProgress > 0.70) {
+            const mistProgress = (phaseProgress - 0.70) / 0.30;
             cloudOverlay.style.opacity = `${Math.min(1, mistProgress * 1.1)}`;
           } else {
             cloudOverlay.style.opacity = '0';
@@ -1666,7 +1626,7 @@
           kaabaWrap.style.opacity = '0';
         }
         // =====================================================================
-        // PHASE 3: 50% - 100% (Clouds Clear -> Kaaba Photo + Tours & Dostyk Package)
+        // PHASE 3: 50% - 100% (Clouds Clear -> Kaaba Photo + Tours & Packages)
         // =====================================================================
         else {
           const phaseProgress = (progress - 0.50) / 0.50; // 0.0 to 1.0
@@ -1676,8 +1636,7 @@
             heroContent.style.pointerEvents = 'none';
           }
 
-          video1.style.opacity = '0';
-          video2.style.opacity = '0';
+          videoPlane.style.opacity = `${Math.max(0, 1 - phaseProgress * 4)}`;
 
           // Mist smoothly fades away right after the airplane finishes entering clouds
           const mistFade = Math.max(0, 1 - phaseProgress * 3.5);
