@@ -1612,10 +1612,10 @@
         const progress = self.progress; // 0.0 to 1.0
 
         // =====================================================================
-        // PHASE 1: 0% - 30% (Airplane Flight in Golden Sky)
+        // PHASE 1: 0% - 22% (Airplane Flight in Golden Sky)
         // =====================================================================
-        if (progress <= 0.30) {
-          const phaseProgress = progress / 0.30;
+        if (progress <= 0.22) {
+          const phaseProgress = progress / 0.22;
           if (video1 && video1.duration) {
             targetTime1 = phaseProgress * video1.duration;
             requestVideoUpdate();
@@ -1623,7 +1623,7 @@
 
           // Hero texts fade smoothly as user scrolls, revealing pure flight video
           if (heroContent) {
-            const heroAlpha = Math.max(0, 1 - (progress / 0.16));
+            const heroAlpha = Math.max(0, 1 - (progress / 0.12));
             heroContent.style.opacity = `${heroAlpha}`;
             heroContent.style.pointerEvents = heroAlpha < 0.1 ? 'none' : 'auto';
           }
@@ -1636,10 +1636,10 @@
           kaabaWrap.style.opacity = '0';
         }
         // =====================================================================
-        // PHASE 2: 31% - 60% (Plane Diving into Clouds -> Whiteout Mist)
+        // PHASE 2: 22% - 50% (Plane Diving into Clouds -> Whiteout Mist)
         // =====================================================================
-        else if (progress > 0.30 && progress <= 0.60) {
-          const phaseProgress = (progress - 0.30) / 0.30; // 0.0 to 1.0
+        else if (progress > 0.22 && progress <= 0.50) {
+          const phaseProgress = (progress - 0.22) / 0.28; // 0.0 to 1.0
 
           if (heroContent) {
             heroContent.style.opacity = '0';
@@ -1655,9 +1655,9 @@
           video2.style.opacity = `${Math.min(1, phaseProgress * 3)}`;
           video2.style.transform = 'none'; // 100% natural, crisp, unzoomed
 
-          // Whiteout cloud mist ramp up as airplane dives deep into clouds (50% to 60%)
-          if (phaseProgress > 0.55) {
-            const mistProgress = (phaseProgress - 0.55) / 0.45;
+          // Whiteout cloud mist ramp up as airplane dives deep into clouds
+          if (phaseProgress > 0.65) {
+            const mistProgress = (phaseProgress - 0.65) / 0.35;
             cloudOverlay.style.opacity = `${Math.min(1, mistProgress * 1.1)}`;
           } else {
             cloudOverlay.style.opacity = '0';
@@ -1666,10 +1666,10 @@
           kaabaWrap.style.opacity = '0';
         }
         // =====================================================================
-        // PHASE 3: 61% - 100% (Kaaba Photo Emerges from Mist + Gentle Parallax)
+        // PHASE 3: 50% - 100% (Clouds Clear -> Kaaba Photo + Tours & Dostyk Package)
         // =====================================================================
         else {
-          const phaseProgress = (progress - 0.60) / 0.40; // 0.0 to 1.0
+          const phaseProgress = (progress - 0.50) / 0.50; // 0.0 to 1.0
 
           if (heroContent) {
             heroContent.style.opacity = '0';
@@ -1679,8 +1679,8 @@
           video1.style.opacity = '0';
           video2.style.opacity = '0';
 
-          // Mist smoothly fades away between 60% and 75%
-          const mistFade = Math.max(0, 1 - phaseProgress * 3.2);
+          // Mist smoothly fades away right after the airplane finishes entering clouds
+          const mistFade = Math.max(0, 1 - phaseProgress * 3.5);
           cloudOverlay.style.opacity = `${mistFade}`;
 
           // Kaaba gently fades in and scales subtly
