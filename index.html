@@ -199,6 +199,29 @@
     .drift-3 { animation: float-slow 6.5s ease-in-out infinite 1.5s; }
     .drift-4 { animation: float-reverse 6s ease-in-out infinite 0.4s; }
 
+    /* Anti-gravity Floating Physics (5-10px subtle, soothing spiritual oscillation) */
+    @keyframes antiGravity1 {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(0.8deg); }
+    }
+    @keyframes antiGravity2 {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(7px) rotate(-0.8deg); }
+    }
+    @keyframes antiGravity3 {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(-0.5deg); }
+    }
+    .float-antigravity-1 {
+      animation: antiGravity1 5.5s ease-in-out infinite;
+    }
+    .float-antigravity-2 {
+      animation: antiGravity2 6.8s ease-in-out infinite 0.9s;
+    }
+    .float-antigravity-3 {
+      animation: antiGravity3 6.2s ease-in-out infinite 1.7s;
+    }
+
     /* Modal Backdrop */
     .modal-backdrop {
       opacity: 0;
@@ -216,35 +239,32 @@
   <!-- =========================================================================
        1. FIXED BORJOMI-STYLE DYNAMIC BACKGROUND CONTAINER
        ========================================================================= -->
-  <div id="fixed-bg-container" class="fixed top-0 left-0 w-screen h-screen z-0 overflow-hidden pointer-events-none">
+  <div id="fixed-bg-container" class="fixed top-0 left-0 w-full h-screen z-0 overflow-hidden pointer-events-none">
     
-    <!-- Video Layer 1 (0% - 22% Hero Section: Side Flight in Golden Sky) -->
+    <!-- Video Layer 1 (0% - 30% Hero Section: Side Flight in Golden Sky) -->
     <video id="bg-video-1" class="bg-layer opacity-100 scale-100" muted loop playsinline preload="auto">
       <source src="video-1.mp4" type="video/mp4" />
     </video>
 
-    <!-- Video Layer 2 (20% - 65% Stats, Why Us, Tours: Plane Diving into Clouds) -->
+    <!-- Video Layer 2 (31% - 60% Stats, Why Us, Tours: Plane Diving into Clouds) -->
     <video id="bg-video-2" class="bg-layer opacity-0 scale-105" muted loop playsinline preload="auto">
       <source src="video-2.mp4" type="video/mp4" />
     </video>
 
-    <!-- Subtle Mist Transition Overlay -->
-    <div id="bg-cloud-overlay" class="absolute inset-0 bg-gradient-to-b from-[#021811]/40 via-transparent to-[#021811]/50 opacity-0 transition-opacity duration-1000"></div>
+    <!-- Pure White Cloud Whiteout Mist (peaks around 55-60%, then dissolves into Kaaba visual) -->
+    <div id="bg-cloud-overlay" class="absolute inset-0 bg-white opacity-0 transition-opacity duration-700 pointer-events-none z-[5]"></div>
 
-    <!-- Layer 3: Final Walk Around the Kaaba Video (65% - 100% Scroll) -->
-    <div id="bg-kaaba-wrap" class="bg-layer opacity-0 scale-105">
-      <video id="bg-video-kaaba" class="w-full h-full object-cover object-center transform transition-transform duration-1000 ease-out" muted loop playsinline preload="auto" poster="photo-kaaba.png">
-        <source src="video-kaaba.mp4" type="video/mp4" />
-        <img id="bg-kaaba-img" src="photo-kaaba.png" alt="Holy Kaaba Mecca Farab Tour" class="w-full h-full object-cover object-center" />
-      </video>
+    <!-- Layer 3: Holy Kaaba Visual (60% - 100% Scroll with gentle fade-in & slow parallax zoom) -->
+    <div id="bg-kaaba-wrap" class="bg-layer opacity-0 scale-100 transition-opacity duration-1000 z-[6]">
+      <img id="bg-kaaba-img" src="photo-kaaba.png" alt="Holy Kaaba Mecca Farab Tour" class="w-full h-full object-cover object-center transform transition-transform duration-1000 ease-out" />
       <!-- Dark Emerald & Gold Vignette Overlays -->
-      <div class="absolute inset-0 bg-gradient-to-b from-[#01140e]/40 via-transparent to-[#01140e]/50"></div>
-      <div class="absolute inset-0 bg-[#021811]/15"></div>
-      <div class="absolute inset-0 islamic-pattern opacity-30"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-[#01140e]/30 via-transparent to-[#01140e]/60 pointer-events-none"></div>
+      <div class="absolute inset-0 bg-[#021811]/15 pointer-events-none"></div>
+      <div class="absolute inset-0 islamic-pattern opacity-30 pointer-events-none"></div>
     </div>
 
-    <!-- Light Cinematic Vignette (Preserves Bright Video Background) -->
-    <div class="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/40 pointer-events-none z-10"></div>
+    <!-- Light Cinematic Vignette -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40 pointer-events-none z-10"></div>
   </div>
 
 
@@ -683,21 +703,21 @@
               </p>
             </div>
 
-            <!-- Fast Highlight Badges -->
+            <!-- Fast Highlight Badges (Anti-gravity Floating) -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-              <div class="p-3.5 rounded-2xl glass-inner text-center">
+              <div class="p-3.5 rounded-2xl glass-inner text-center float-antigravity-1">
                 <i data-lucide="plane-takeoff" class="w-5 h-5 text-gold-400 mx-auto mb-1.5"></i>
                 <span class="text-xs text-gray-200 font-semibold block">Тікелей рейс</span>
               </div>
-              <div class="p-3.5 rounded-2xl glass-inner text-center">
+              <div class="p-3.5 rounded-2xl glass-inner text-center float-antigravity-2">
                 <i data-lucide="hotel" class="w-5 h-5 text-gold-400 mx-auto mb-1.5"></i>
                 <span class="text-xs text-gray-200 font-semibold block">5★ Қонақүйлер</span>
               </div>
-              <div class="p-3.5 rounded-2xl glass-inner text-center">
+              <div class="p-3.5 rounded-2xl glass-inner text-center float-antigravity-3">
                 <i data-lucide="luggage" class="w-5 h-5 text-gold-400 mx-auto mb-1.5"></i>
                 <span class="text-xs text-gray-200 font-semibold block">Багаж 2x23 кг</span>
               </div>
-              <div class="p-3.5 rounded-2xl glass-inner text-center">
+              <div class="p-3.5 rounded-2xl glass-inner text-center float-antigravity-2">
                 <i data-lucide="user-check" class="w-5 h-5 text-gold-400 mx-auto mb-1.5"></i>
                 <span class="text-xs text-gray-200 font-semibold block">Жеке ұстаз</span>
               </div>
@@ -752,7 +772,7 @@
           </div>
         </div>
 
-        <!-- 9 RISING FLOATING ICONS GRID (WHAT'S INCLUDED) -->
+        <!-- 9 RISING FLOATING ICONS GRID (WHAT'S INCLUDED - ANTI-GRAVITY FLOATING) -->
         <div class="space-y-8 pt-4">
           <div class="text-center">
             <h3 class="font-serif text-2xl sm:text-3xl font-bold text-white">
@@ -764,7 +784,7 @@
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-6">
             
             <!-- 1. Flight -->
-            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1">
+            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1 float-antigravity-1">
               <div class="w-12 h-12 rounded-2xl bg-gold-500/20 border border-gold-400/40 flex items-center justify-center text-gold-400 mx-auto mb-3">
                 <i data-lucide="plane" class="w-6 h-6"></i>
               </div>
@@ -773,7 +793,7 @@
             </div>
 
             <!-- 2. Visa -->
-            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1">
+            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1 float-antigravity-2">
               <div class="w-12 h-12 rounded-2xl bg-gold-500/20 border border-gold-400/40 flex items-center justify-center text-gold-400 mx-auto mb-3">
                 <i data-lucide="file-check" class="w-6 h-6"></i>
               </div>
@@ -782,7 +802,7 @@
             </div>
 
             <!-- 3. Hotel -->
-            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1">
+            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1 float-antigravity-3">
               <div class="w-12 h-12 rounded-2xl bg-gold-500/20 border border-gold-400/40 flex items-center justify-center text-gold-400 mx-auto mb-3">
                 <i data-lucide="hotel" class="w-6 h-6"></i>
               </div>
@@ -791,7 +811,7 @@
             </div>
 
             <!-- 4. Transfer -->
-            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1">
+            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1 float-antigravity-2">
               <div class="w-12 h-12 rounded-2xl bg-gold-500/20 border border-gold-400/40 flex items-center justify-center text-gold-400 mx-auto mb-3">
                 <i data-lucide="bus-front" class="w-6 h-6"></i>
               </div>
@@ -800,7 +820,7 @@
             </div>
 
             <!-- 5. Ustaz Guidance -->
-            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1">
+            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1 float-antigravity-1">
               <div class="w-12 h-12 rounded-2xl bg-gold-500/20 border border-gold-400/40 flex items-center justify-center text-gold-400 mx-auto mb-3">
                 <i data-lucide="user-round-check" class="w-6 h-6"></i>
               </div>
@@ -809,7 +829,7 @@
             </div>
 
             <!-- 6. Ziyarat -->
-            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1">
+            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1 float-antigravity-3">
               <div class="w-12 h-12 rounded-2xl bg-gold-500/20 border border-gold-400/40 flex items-center justify-center text-gold-400 mx-auto mb-3">
                 <i data-lucide="map-pin" class="w-6 h-6"></i>
               </div>
@@ -818,7 +838,7 @@
             </div>
 
             <!-- 7. Food -->
-            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1">
+            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1 float-antigravity-1">
               <div class="w-12 h-12 rounded-2xl bg-gold-500/20 border border-gold-400/40 flex items-center justify-center text-gold-400 mx-auto mb-3">
                 <i data-lucide="utensils-crossed" class="w-6 h-6"></i>
               </div>
@@ -827,7 +847,7 @@
             </div>
 
             <!-- 8. Baggage -->
-            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1">
+            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1 float-antigravity-2">
               <div class="w-12 h-12 rounded-2xl bg-gold-500/20 border border-gold-400/40 flex items-center justify-center text-gold-400 mx-auto mb-3">
                 <i data-lucide="briefcase" class="w-6 h-6"></i>
               </div>
@@ -836,7 +856,7 @@
             </div>
 
             <!-- 9. Extra & Gifts -->
-            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1">
+            <div class="p-5 sm:p-6 rounded-3xl glass-emerald hover:border-gold-400 transition-all duration-300 text-center hover:-translate-y-1 float-antigravity-3">
               <div class="w-12 h-12 rounded-2xl bg-gold-500/20 border border-gold-400/40 flex items-center justify-center text-gold-400 mx-auto mb-3">
                 <i data-lucide="gift" class="w-6 h-6"></i>
               </div>
@@ -1523,94 +1543,121 @@
     gsap.registerPlugin(ScrollTrigger);
 
     // =========================================================================
-    // HIGH-PERFORMANCE ZERO-LAG VIDEO SCROLL ENGINE (SILKY 60/120 FPS)
+    // BORJOMI-STYLE SYNCHRONIZED VIDEO SCROLL ENGINE (0%-30%, 31%-60%, 61%-100%)
     // =========================================================================
     const video1 = document.getElementById('bg-video-1');
     const video2 = document.getElementById('bg-video-2');
-    const videoKaaba = document.getElementById('bg-video-kaaba');
     const kaabaWrap = document.getElementById('bg-kaaba-wrap');
+    const kaabaImg = document.getElementById('bg-kaaba-img');
     const cloudOverlay = document.getElementById('bg-cloud-overlay');
 
-    let currentPhase = 1; // 1: video1, 2: video2, 3: videoKaaba
-    let isPlaying = false;
-    let scrollStopTimer = null;
+    let targetTime1 = 0;
+    let targetTime2 = 0;
+    let isVideo1Ready = false;
+    let isVideo2Ready = false;
 
-    function playActiveVideo() {
-      const active = currentPhase === 1 ? video1 : (currentPhase === 2 ? video2 : videoKaaba);
-      if (active && !isPlaying) {
-        isPlaying = true;
-        const playPromise = active.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(() => { isPlaying = false; });
-        }
-      }
-
-      // Smoothly stop video 150ms after user finishes scrolling
-      clearTimeout(scrollStopTimer);
-      scrollStopTimer = setTimeout(() => {
-        isPlaying = false;
-        [video1, video2, videoKaaba].forEach(v => {
-          if (v && !v.paused) v.pause();
-        });
-      }, 150);
+    if (video1) {
+      video1.addEventListener('loadedmetadata', () => { isVideo1Ready = true; });
+    }
+    if (video2) {
+      video2.addEventListener('loadedmetadata', () => { isVideo2Ready = true; });
     }
 
-    // Passive scroll listener for ultra-fast response
-    window.addEventListener('scroll', playActiveVideo, { passive: true });
+    // High performance RAF video scrubber
+    let rafActive = false;
+    function updateVideoFrame() {
+      if (video1 && isVideo1Ready && video1.duration) {
+        const diff1 = targetTime1 - video1.currentTime;
+        if (Math.abs(diff1) > 0.05) {
+          video1.currentTime += diff1 * 0.35;
+        }
+      }
+      if (video2 && isVideo2Ready && video2.duration) {
+        const diff2 = targetTime2 - video2.currentTime;
+        if (Math.abs(diff2) > 0.05) {
+          video2.currentTime += diff2 * 0.35;
+        }
+      }
+      rafActive = false;
+    }
 
-    // Master ScrollTrigger for smooth phase transitions & Parallax scale
+    function requestVideoUpdate() {
+      if (!rafActive) {
+        rafActive = true;
+        requestAnimationFrame(updateVideoFrame);
+      }
+    }
+
+    // Master ScrollTrigger for Borjomi-Style Transitions
     ScrollTrigger.create({
       trigger: 'body',
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 0.2,
+      scrub: 0.1,
       onUpdate: (self) => {
         const progress = self.progress; // 0.0 to 1.0
 
-        // Phase 1: 0% to 22% (Hero Section Flight)
-        if (progress <= 0.22) {
-          if (currentPhase !== 1) {
-            currentPhase = 1;
-            if (video2 && !video2.paused) video2.pause();
-            if (videoKaaba && !videoKaaba.paused) videoKaaba.pause();
+        // =====================================================================
+        // PHASE 1: 0% - 30% (Airplane Flight in Golden Sky)
+        // =====================================================================
+        if (progress <= 0.30) {
+          const phaseProgress = progress / 0.30;
+          if (video1 && video1.duration) {
+            targetTime1 = phaseProgress * video1.duration;
+            requestVideoUpdate();
           }
+
           video1.style.opacity = '1';
-          video1.style.transform = `scale(${1 + progress * 0.1})`;
+          video1.style.transform = `scale(${1 + phaseProgress * 0.06})`;
+          
           video2.style.opacity = '0';
           cloudOverlay.style.opacity = '0';
           kaabaWrap.style.opacity = '0';
-        } 
-        // Phase 2: 20% to 65% (Stats, Why Us, Tours - Golden Clouds Airplane)
-        else if (progress > 0.20 && progress <= 0.65) {
-          const phaseProgress = (progress - 0.20) / 0.45;
-          if (currentPhase !== 2) {
-            currentPhase = 2;
-            if (video1 && !video1.paused) video1.pause();
-            if (videoKaaba && !videoKaaba.paused) videoKaaba.pause();
+        }
+        // =====================================================================
+        // PHASE 2: 31% - 60% (Plane Diving into Clouds -> Whiteout Mist)
+        // =====================================================================
+        else if (progress > 0.30 && progress <= 0.60) {
+          const phaseProgress = (progress - 0.30) / 0.30; // 0.0 to 1.0
+
+          if (video2 && video2.duration) {
+            targetTime2 = phaseProgress * video2.duration;
+            requestVideoUpdate();
           }
-          
-          video1.style.opacity = `${Math.max(0, 1 - phaseProgress * 2.5)}`;
-          video2.style.opacity = `${Math.min(1, phaseProgress * 2.5)}`;
-          video2.style.transform = `scale(${1.02 + phaseProgress * 0.05})`;
-          
-          cloudOverlay.style.opacity = `${Math.min(0.35, phaseProgress * 0.4)}`;
+
+          video1.style.opacity = `${Math.max(0, 1 - phaseProgress * 3)}`;
+          video2.style.opacity = `${Math.min(1, phaseProgress * 3)}`;
+          video2.style.transform = `scale(${1.02 + phaseProgress * 0.06})`;
+
+          // Whiteout cloud mist ramp up as airplane dives deep into clouds (50% to 60%)
+          if (phaseProgress > 0.55) {
+            const mistProgress = (phaseProgress - 0.55) / 0.45;
+            cloudOverlay.style.opacity = `${Math.min(1, mistProgress * 1.1)}`;
+          } else {
+            cloudOverlay.style.opacity = '0';
+          }
+
           kaabaWrap.style.opacity = '0';
-        } 
-        // Phase 3: 65% to 100% (Timeline, Founder, FAQ, Contact - Kaaba Walk)
+        }
+        // =====================================================================
+        // PHASE 3: 61% - 100% (Kaaba Photo Emerges from Mist + Gentle Parallax)
+        // =====================================================================
         else {
-          const phaseProgress = (progress - 0.65) / 0.35;
-          if (currentPhase !== 3) {
-            currentPhase = 3;
-            if (video1 && !video1.paused) video1.pause();
-            if (video2 && !video2.paused) video2.pause();
-          }
-          
+          const phaseProgress = (progress - 0.60) / 0.40; // 0.0 to 1.0
+
           video1.style.opacity = '0';
           video2.style.opacity = '0';
-          cloudOverlay.style.opacity = `${Math.max(0, 0.35 - phaseProgress * 2)}`;
-          
-          kaabaWrap.style.opacity = `${Math.min(1, phaseProgress * 2.5)}`;
-          kaabaWrap.style.transform = `scale(${1.03 - phaseProgress * 0.03})`;
+
+          // Mist smoothly fades away between 60% and 75%
+          const mistFade = Math.max(0, 1 - phaseProgress * 3.2);
+          cloudOverlay.style.opacity = `${mistFade}`;
+
+          // Kaaba gently fades in and scales subtly
+          const kaabaAlpha = Math.min(1, phaseProgress * 2.8);
+          kaabaWrap.style.opacity = `${kaabaAlpha}`;
+          if (kaabaImg) {
+            kaabaImg.style.transform = `scale(${1.0 + phaseProgress * 0.05})`;
+          }
         }
       }
     });
