@@ -1,4 +1,4 @@
-import os, sys, json, datetime, threading
+import os, sys, json, datetime, threading, urllib.request, urllib.parse
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
@@ -7,6 +7,35 @@ EXCEL_FILE = "leads.xlsx"
 CSV_FILE = "leads.csv"
 JSON_FILE = "leads.json"
 lead_lock = threading.Lock()
+
+ALEM_API_URL = "https://llm.alem.ai/v1/chat/completions"
+ALEM_API_KEY = "sk-I8agzhli09Od5WbFynXkyA"
+
+FARAB_SYSTEM_PROMPT = """Сен Farab Tour (Мекке мен Мәдинаға рухани Ұмра сапарларын кәсіби деңгейде ұйымдастырушы туроператор) компаниясының ресми ақылды AI кеңесшісісің.
+
+Компанияның негізгі мәліметтері:
+- Негізін қалаушы әрі жетекші ұстаз: дінтанушы Әлфараби Сағымбекұлы (6+ жыл тәжірибе, 1200+ риза қажы, 35+ сәтті ұйымдастырылған топ).
+- Ұшу қаласы: Шымкент халықаралық әуежайынан тікелей чартерлік/тұрақты рейстермен Мәдина немесе Жиддаға екі жаққа. Сондай-ақ Алматы мен Астанадан қосылу мүмкіндігі бар.
+- Негізгі хит пакет: DOSTYK PACKAGE (11 күндік толық сапар — Мәдина қаласында 4 күн мешіт жанында, Мекке қаласында 7 күн әл-Харамға жақын 5★ қонақүй).
+- Топтамаға кіретін 9 негізгі қызмет:
+  1. Әуе билеті (Шымкент - Мәдина / Жидда - Шымкент екі жаққа)
+  2. Ресми Ұмра Визасы мен толық медициналық сақтандыру
+  3. 5★ Премиум Қонақүйлер (Мекке мен Мәдинада мешіт жанындағы жайлы бөлмелер)
+  4. VIP Трансфер (жайлы, салқындатқышы бар люкс автобустармен қатынау)
+  5. Ұстаз жетекшілігі (Әлфараби ұстазбен амалдар, дұғалар, күнделікті уағыздар)
+  6. Тарихи Зиярат (Ұхыд тауы, Құба мешіті, Қос құбыла, Нұр тауы, Сауыр үңгірі)
+  7. Толық Тамақтану (3-4 мезгіл швед үстелі және халал асхана)
+  8. 2x23 кг Багаж + 7 кг қол жүгі + 5 литр Зәмзәм сыйы
+  9. Қажылар жинағы (ихрам, сөмке, бейдж, жолбасшы кітапша)
+- Құжаттар: Жарамдылық мерзімі кемінде 6 ай қалған шетелдік төлқұжат және 3x4 көлеміндегі фотосурет (визаны толық агенттік рәсімдейді).
+- Дайындық: Сапар алдында қажыларға 3 апталық тегін рухани және практикалық дәрістер өткізіледі.
+- Ерекшелігі: Әр қажыға жеке жанашырлық пен қамқорлық, жан тыныштығы.
+
+Жауап беру ережелерің:
+1. Тек қазақ тілінде, өте сыпайы, жылы, сенімді әрі сауатты жауап бер.
+2. Мәліметті жинақы, түсінікті (қажет болса қысқа тізіммен) жеткіз.
+3. Егер қолданушы нақты бағаларды, жақын күндерді немесе орын брондауды сұраса, сұрағына қысқа мәлімет беріп: «Толық кеңес алу немесе орын брондау үшін төмендегі WhatsApp батырмасы арқылы менеджерімізбен байланысыңыз» деп бағытта.
+"""
 
 def record_lead_to_excel(name, phone, city, note="", source="Сайт"):
     """
@@ -112,8 +141,85 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
         self.send_header('Accept-Ranges', 'bytes')
         super().end_headers()
 
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+        self.end_headers()
+
     def do_POST(self):
-        if self.path == '/api/lead':
+        if self.path == '/api/chat':
+            content_length = int(self.headers.get('Content-Length', 0))
+            post_body = self.rfile.read(content_length).decode('utf-8')
+            
+            try:
+                data = json.loads(post_body)
+            except Exception:
+                self.send_response(400)
+                self.send_header('Content-type', 'application/json; charset=utf-8')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "error", "message": "Invalid JSON"}).encode('utf-8'))
+                return
+
+            question = data.get('question', '').strip()
+            if not question:
+                self.send_response(400)
+                self.send_header('Content-type', 'application/json; charset=utf-8')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "error", "message": "Сұрақты енгізіңіз"}).encode('utf-8'))
+                return
+
+            try:
+                req_payload = {
+                    "model": "alemllm",
+                    "messages": [
+                        {"role": "system", "content": FARAB_SYSTEM_PROMPT},
+                        {"role": "user", "content": question}
+                    ]
+                }
+                api_req = urllib.request.Request(
+                    ALEM_API_URL,
+                    data=json.dumps(req_payload).encode('utf-8'),
+                    headers={
+                        'Content-Type': 'application/json',
+                        'Authorization': f'Bearer {ALEM_API_KEY}'
+                    }
+                )
+                with urllib.request.urlopen(api_req, timeout=25) as resp:
+                    api_res = json.loads(resp.read().decode('utf-8'))
+                    answer = api_res.get('choices', [{}])[0].get('message', {}).get('content', '')
+
+                # Build prefilled WhatsApp escalation URL
+                wa_question_text = f"Ассалаумағалейкум! Farab Tour AI кеңесшісінде сұрақ қойдым:\n\n«{question}»\n\nОсы сауал бойынша толық кеңес алып, орын брондағым келеді."
+                wa_url = f"https://wa.me/77474983298?text={urllib.parse.quote(wa_question_text)}"
+
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json; charset=utf-8')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "status": "success",
+                    "answer": answer,
+                    "question": question,
+                    "whatsapp_url": wa_url
+                }, ensure_ascii=False).encode('utf-8'))
+            except Exception as e:
+                print(f"[AI CHAT ERROR] {e}")
+                self.send_response(500)
+                self.send_header('Content-type', 'application/json; charset=utf-8')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "status": "error",
+                    "message": "AI жауабын алу кезінде қате орын алды. WhatsApp арқылы тікелей сұрай аласыз.",
+                    "whatsapp_url": f"https://wa.me/77474983298?text={urllib.parse.quote('Ассалаумағалейкум! Farab Tour Ұмра сапары бойынша кеңес алғым келеді.')}"
+                }, ensure_ascii=False).encode('utf-8'))
+            return
+
+        elif self.path == '/api/lead':
             content_length = int(self.headers.get('Content-Length', 0))
             post_body = self.rfile.read(content_length).decode('utf-8')
             

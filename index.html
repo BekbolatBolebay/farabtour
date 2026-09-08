@@ -1106,6 +1106,140 @@
           <p class="text-slate-100 text-base sm:text-lg font-medium">Ұмра сапарына қатысты барлық маңызды жауаптар</p>
         </div>
 
+        <!-- ===============================================================
+             INTERACTIVE AI FAQ ASSISTANT (POWERED BY ALEM LLM + WHATSAPP)
+             =============================================================== -->
+        <div class="rounded-3xl glass-dostyk border-2 border-gold-400/50 p-6 sm:p-9 shadow-2xl space-y-6 relative overflow-hidden group">
+          <!-- Ambient Glow Background -->
+          <div class="absolute -right-16 -top-16 w-56 h-56 bg-gold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -left-16 -bottom-16 w-56 h-56 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <!-- Header -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 text-emerald-950 flex items-center justify-center font-bold shadow-lg shadow-gold-500/20 shrink-0">
+                <i data-lucide="sparkles" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="font-serif text-xl sm:text-2xl font-bold text-white tracking-wide">
+                    Farab AI Ақылды Кеңесші
+                  </h3>
+                  <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/25 text-emerald-300 text-[11px] font-black uppercase tracking-wider border border-emerald-400/40 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Online
+                  </span>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-200 font-medium">Жоба бойынша кез келген сұрағыңызды жазыңыз, AI лезде жауап береді</p>
+              </div>
+            </div>
+            <div class="hidden sm:flex items-center gap-1.5 text-xs text-gold-300/80 bg-black/40 px-3 py-1.5 rounded-full border border-gold-400/30">
+              <i data-lucide="zap" class="w-3.5 h-3.5 text-gold-400"></i>
+              <span>Alem LLM AI Жүйесі</span>
+            </div>
+          </div>
+
+          <!-- Question Input Form -->
+          <form id="ai-faq-form" onsubmit="handleAiFaqSubmit(event)" class="relative flex flex-col sm:flex-row items-center gap-3">
+            <div class="relative w-full">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gold-400">
+                <i data-lucide="message-square" class="w-5 h-5"></i>
+              </div>
+              <input
+                type="text"
+                id="ai-faq-input"
+                placeholder="Мысалы: Бағасына не кіреді? немесе Шымкенттен ұшу қашан?"
+                class="w-full pl-12 pr-4 py-4 rounded-2xl bg-black/50 border border-gold-400/45 text-white placeholder-slate-300 text-sm sm:text-base focus:outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-400/40 transition-all shadow-inner"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              id="ai-faq-btn"
+              class="shimmer-btn w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-emerald-950 font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2.5 shadow-xl shadow-gold-500/25 hover:scale-105 active:scale-95 transition-all shrink-0 cursor-pointer"
+            >
+              <span id="ai-faq-btn-text">Сұрау</span>
+              <i id="ai-faq-btn-icon" data-lucide="send" class="w-4 h-4"></i>
+            </button>
+          </form>
+
+          <!-- Quick Question Chips -->
+          <div class="flex flex-wrap items-center gap-2 pt-0.5">
+            <span class="text-xs text-gold-300/90 font-semibold flex items-center gap-1 mr-1">
+              <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
+              Жылдам сұрақтар:
+            </span>
+            <button type="button" onclick="setAiQuestion('Ұмра сапарына қандай құжаттар қажет?')" class="px-3.5 py-1.5 rounded-full bg-emerald-950/60 hover:bg-gold-500/25 border border-gold-400/35 text-xs text-slate-100 hover:text-gold-200 transition-all cursor-pointer">
+              📋 Құжаттар
+            </button>
+            <button type="button" onclick="setAiQuestion('DOSTYK хит пакетіне қандай 9 негізгі қызмет кіреді?')" class="px-3.5 py-1.5 rounded-full bg-emerald-950/60 hover:bg-gold-500/25 border border-gold-400/35 text-xs text-slate-100 hover:text-gold-200 transition-all cursor-pointer">
+              📦 9 Қызмет
+            </button>
+            <button type="button" onclick="setAiQuestion('Қонақүйлер әл-Харам мешітіне қаншалықты жақын?')" class="px-3.5 py-1.5 rounded-full bg-emerald-950/60 hover:bg-gold-500/25 border border-gold-400/35 text-xs text-slate-100 hover:text-gold-200 transition-all cursor-pointer">
+              🏨 Қонақүйлер
+            </button>
+            <button type="button" onclick="setAiQuestion('Шымкенттен ұшу тікелей ме және қандай рейстермен?')" class="px-3.5 py-1.5 rounded-full bg-emerald-950/60 hover:bg-gold-500/25 border border-gold-400/35 text-xs text-slate-100 hover:text-gold-200 transition-all cursor-pointer">
+              ✈️ Ұшу қаласы
+            </button>
+            <button type="button" onclick="setAiQuestion('Жетекші ұстаз Әлфараби Сағымбекұлының тәжірибесі қандай?')" class="px-3.5 py-1.5 rounded-full bg-emerald-950/60 hover:bg-gold-500/25 border border-gold-400/35 text-xs text-slate-100 hover:text-gold-200 transition-all cursor-pointer">
+              👤 Жетекші ұстаз
+            </button>
+          </div>
+
+          <!-- Dynamic AI Response Card -->
+          <div id="ai-faq-result" class="hidden mt-4 p-6 rounded-2xl bg-black/60 border border-gold-400/40 space-y-4 text-left transition-all duration-300 shadow-2xl">
+            <div class="flex items-center justify-between gap-3 border-b border-gold-400/25 pb-3">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-gold-500/20 border border-gold-400/40 flex items-center justify-center text-gold-400">
+                  <i data-lucide="bot" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <span class="text-xs font-bold uppercase tracking-wider text-gold-400">AI Кеңесшінің жауабы</span>
+                  <div id="ai-faq-user-question" class="text-xs text-slate-300 font-medium line-clamp-1 italic"></div>
+                </div>
+              </div>
+              <button type="button" onclick="closeAiResult()" class="text-slate-400 hover:text-white p-1 transition-colors cursor-pointer" title="Жабу">
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+            </div>
+            
+            <div id="ai-faq-answer" class="text-sm sm:text-base text-slate-100 font-normal leading-relaxed whitespace-pre-line space-y-2">
+            </div>
+
+            <!-- WhatsApp Escalation Action Banner -->
+            <div class="pt-4 border-t border-gold-400/20 flex flex-col md:flex-row items-center justify-between gap-4 bg-emerald-950/60 p-4 sm:p-5 rounded-2xl border border-gold-400/30">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-full bg-[#25D366]/20 border border-[#25D366]/50 flex items-center justify-center text-[#25D366] shrink-0 shadow-lg shadow-[#25D366]/10">
+                  <i data-lucide="message-circle" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h4 class="text-sm sm:text-base font-bold text-white">Жетіспеген мәліметті WhatsApp-тан алу</h4>
+                  <p class="text-xs text-slate-200">Менеджермен жеке байланысып, орын брондау немесе жеке сұрақ қою</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2.5 w-full md:w-auto">
+                <a
+                  id="ai-faq-direct-wa-btn"
+                  href="https://wa.me/77474983298"
+                  target="_blank"
+                  class="w-full md:w-auto px-6 py-3 rounded-xl bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-[#25D366]/25 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                >
+                  <i data-lucide="send" class="w-4 h-4"></i>
+                  <span>WhatsApp-қа өту</span>
+                </a>
+                <button
+                  type="button"
+                  onclick="openAiLeadModal()"
+                  class="w-full md:w-auto px-5 py-3 rounded-xl bg-emerald-900/80 hover:bg-emerald-800 text-gold-300 hover:text-white border border-gold-400/40 text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                >
+                  <i data-lucide="phone-call" class="w-4 h-4"></i>
+                  <span>Қоңырау сұрау</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- 12 Accordion Items Container -->
         <div class="space-y-4" id="faq-accordion-container">
           
@@ -2094,6 +2228,134 @@
         chevron.innerHTML = '<i data-lucide="plus" class="w-4 h-4"></i>';
       }
       lucide.createIcons();
+    }
+
+    // =========================================================================
+    // ALEM LLM AI FAQ ASSISTANT & WHATSAPP ESCALATION
+    // =========================================================================
+    let currentAiQuestion = '';
+    let currentAiAnswer = '';
+
+    function setAiQuestion(text) {
+      const input = document.getElementById('ai-faq-input');
+      if (input) {
+        input.value = text;
+        handleAiFaqSubmit(new Event('submit'));
+      }
+    }
+
+    async function handleAiFaqSubmit(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const input = document.getElementById('ai-faq-input');
+      const question = input ? input.value.trim() : '';
+      if (!question) return;
+
+      currentAiQuestion = question;
+      const btn = document.getElementById('ai-faq-btn');
+      const btnText = document.getElementById('ai-faq-btn-text');
+      const btnIcon = document.getElementById('ai-faq-btn-icon');
+      const resultBox = document.getElementById('ai-faq-result');
+      const answerBox = document.getElementById('ai-faq-answer');
+      const questionTag = document.getElementById('ai-faq-user-question');
+
+      // Loading state
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.textContent = 'Жауап дайындалуда...';
+      if (btnIcon) btnIcon.outerHTML = '<div id="ai-faq-btn-icon" class="w-4 h-4 border-2 border-emerald-950 border-t-transparent rounded-full animate-spin"></div>';
+
+      resultBox.classList.remove('hidden');
+      if (questionTag) questionTag.textContent = `«${question}»`;
+      answerBox.innerHTML = `
+        <div class="flex items-center gap-3 py-4 text-gold-300">
+          <div class="w-5 h-5 border-2 border-gold-400 border-t-transparent rounded-full animate-spin"></div>
+          <span class="text-sm font-medium">Farab AI сұрағыңызды өңдеуде, күте тұрыңыз...</span>
+        </div>
+      `;
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      let answer = '';
+      let waUrl = '';
+
+      // 1. Try local server /api/chat endpoint first (which uses Alem LLM with rich system prompt)
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question })
+        });
+        const data = await res.json();
+        if (data && data.status === 'success' && data.answer) {
+          answer = data.answer;
+          waUrl = data.whatsapp_url;
+        }
+      } catch (err) {
+        console.warn('Local /api/chat error, trying direct Alem LLM endpoint...', err);
+      }
+
+      // 2. Fallback to direct client-side Alem LLM API if local server is unavailable
+      if (!answer) {
+        try {
+          const directRes = await fetch('https://llm.alem.ai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer sk-I8agzhli09Od5WbFynXkyA'
+            },
+            body: JSON.stringify({
+              model: 'alemllm',
+              messages: [
+                {
+                  role: 'system',
+                  content: 'Сен Farab Tour Ұмра туроператорының AI көмекшісісің. Ұшу Шымкенттен тікелей. Хит топтама: DOSTYK PACKAGE (11 күндік). 9 негізгі қызмет кіреді: әуе билеті, ресми виза, 5★ қонақүй, VIP трансфер, ұстаз Әлфараби Сағымбекұлы, тарихи зиярат, швед үстелі 3-4 мезгіл, 2x23кг багаж, қажылар жинағы. Қазақша сыпайы жауап бер және толық кеңес үшін WhatsApp-қа бағытта.'
+                },
+                { role: 'user', content: question }
+              ]
+            })
+          });
+          const directData = await directRes.json();
+          answer = directData?.choices?.[0]?.message?.content || '';
+        } catch (directErr) {
+          console.error('Direct Alem LLM error:', directErr);
+        }
+      }
+
+      // Reset button state
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.textContent = 'Сұрау';
+      const spinner = document.getElementById('ai-faq-btn-icon');
+      if (spinner) spinner.outerHTML = '<i id="ai-faq-btn-icon" data-lucide="send" class="w-4 h-4"></i>';
+      lucide.createIcons();
+
+      if (answer) {
+        currentAiAnswer = answer;
+        // Format markdown bolding and linebreaks
+        const formatted = answer
+          .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>')
+          .replace(/\n\n/g, '<div class="h-2"></div>')
+          .replace(/\n/g, '<br/>');
+        answerBox.innerHTML = formatted;
+
+        // Configure WhatsApp button
+        const defaultWaText = `Ассалаумағалейкум! Farab Tour сайтындағы AI кеңесшіден мына сұрақты қойған едім:\n\n«${question}»\n\nОсы бойынша толық мәлімет беріп, орын брондауға көмектесесіз бе?`;
+        const waLink = waUrl || `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(defaultWaText)}`;
+        
+        const directBtn = document.getElementById('ai-faq-direct-wa-btn');
+        if (directBtn) directBtn.href = waLink;
+      } else {
+        answerBox.innerHTML = `
+          <p class="text-amber-300 font-medium">Кешіріңіз, AI желісіне қосылу сәл кешігуде. Бұл сұрағыңызға тікелей WhatsApp менеджеріміз лезде жауап береді.</p>
+        `;
+      }
+    }
+
+    function openAiLeadModal() {
+      const q = currentAiQuestion || 'Ұмра сапары бойынша кеңес';
+      openConsultationModal('AI FAQ Кеңесші', `Сұрақ: ${q}`);
+    }
+
+    function closeAiResult() {
+      const resultBox = document.getElementById('ai-faq-result');
+      if (resultBox) resultBox.classList.add('hidden');
     }
 
     // =========================================================================
