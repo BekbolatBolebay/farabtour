@@ -1,4 +1,4 @@
-import os, sys, json, datetime, threading, urllib.request, urllib.parse
+import os, sys, json, datetime, threading, urllib.request, urllib.parse, re
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
@@ -33,8 +33,9 @@ FARAB_SYSTEM_PROMPT = """Сен Farab Tour (Мекке мен Мәдинаға �
 
 Жауап беру ережелерің:
 1. Тек қазақ тілінде, өте сыпайы, жылы, сенімді әрі сауатты жауап бер.
-2. Мәліметті жинақы, түсінікті (қажет болса қысқа тізіммен) жеткіз.
-3. Егер қолданушы нақты бағаларды, жақын күндерді немесе орын брондауды сұраса, сұрағына қысқа мәлімет беріп: «Толық кеңес алу немесе орын брондау үшін төмендегі WhatsApp батырмасы арқылы менеджерімізбен байланысыңыз» деп бағытта.
+2. Мәліметті жинақы, қысқа әрі нақты жеткіз.
+3. МАНЫЗДЫ ТАЛАП: Жауабыңда ЕШҚАШАН решетка (#, ##, ###) немесе хештег таңбаларын қолданба! Тақырыпшаларды жай ғана нөмірлеп немесе қалың әріппен жаз.
+4. Егер қолданушы нақты бағаларды, жақын күндерді немесе орын брондауды сұраса, сұрағына қысқа мәлімет беріп: «Толық кеңес алу немесе орын брондау үшін төмендегі WhatsApp батырмасы арқылы менеджерімізбен байланысыңыз» деп бағытта.
 """
 
 def record_lead_to_excel(name, phone, city, note="", source="Сайт"):
@@ -191,6 +192,8 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
                 with urllib.request.urlopen(api_req, timeout=25) as resp:
                     api_res = json.loads(resp.read().decode('utf-8'))
                     answer = api_res.get('choices', [{}])[0].get('message', {}).get('content', '')
+                    # Strip any lingering markdown hashes from response
+                    answer = re.sub(r'(?m)^#{1,6}\s*', '', answer)
 
                 # Build prefilled WhatsApp escalation URL
                 wa_question_text = f"Ассалаумағалейкум! Farab Tour AI кеңесшісінде сұрақ қойдым:\n\n«{question}»\n\nОсы сауал бойынша толық кеңес алып, орын брондағым келеді."

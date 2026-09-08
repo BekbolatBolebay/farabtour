@@ -2244,6 +2244,69 @@
       }
     }
 
+    // Format AI markdown into clean, beautiful HTML (eliminating raw hashes and hashtags)
+    function formatAiResponse(text) {
+      if (!text) return '';
+      const lines = text.trim().split('\n');
+      const parts = [];
+
+      for (let line of lines) {
+        let trimmed = line.trim();
+        if (!trimmed) {
+          parts.push('<div class="h-2"></div>');
+          continue;
+        }
+
+        // 1. Markdown heading (###, ##, #) -> Elegant gold subheader without hashes
+        const headerMatch = trimmed.match(/^#{1,6}\s*(.+)$/);
+        if (headerMatch) {
+          let title = headerMatch[1].replace(/\*\*(.*?)\*\*/g, '$1').replace(/^#+\s*/, '').trim();
+          parts.push(`
+            <div class="font-bold text-gold-300 text-sm md:text-base mt-3 mb-1.5 flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-gold-400 shrink-0"></span>
+              <span>${title}</span>
+            </div>
+          `);
+          continue;
+        }
+
+        // 2. Bullet list (*, -, •) -> Beautiful indented item with gold accent
+        const bulletMatch = trimmed.match(/^[\*\-•]\s*(.+)$/);
+        if (bulletMatch) {
+          let item = bulletMatch[1].replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
+          item = item.replace(/^#+\s*/, '');
+          parts.push(`
+            <div class="flex items-start gap-2 my-1 text-gray-200 text-xs md:text-sm leading-relaxed pl-1">
+              <span class="text-gold-400 text-xs mt-0.5 shrink-0">✦</span>
+              <span>${item}</span>
+            </div>
+          `);
+          continue;
+        }
+
+        // 3. Numbered list item like "1. ..."
+        const numberedMatch = trimmed.match(/^(\d+[\.\)])\s*(.+)$/);
+        if (numberedMatch && !trimmed.startsWith('#')) {
+          let num = numberedMatch[1];
+          let item = numberedMatch[2].replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
+          parts.push(`
+            <div class="flex items-start gap-2 my-1.5 text-gray-200 text-xs md:text-sm leading-relaxed pl-1">
+              <span class="font-bold text-gold-300 shrink-0">${num}</span>
+              <span>${item}</span>
+            </div>
+          `);
+          continue;
+        }
+
+        // 4. Regular paragraph (strip any accidental hash symbols)
+        let formatted = trimmed.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
+        formatted = formatted.replace(/^#+\s*/, '');
+        parts.push(`<p class="text-xs md:text-sm text-gray-200 leading-relaxed my-1">${formatted}</p>`);
+      }
+
+      return parts.join('');
+    }
+
     async function handleAiFaqSubmit(e) {
       if (e && e.preventDefault) e.preventDefault();
       const input = document.getElementById('ai-faq-input');
@@ -2306,7 +2369,7 @@
               messages: [
                 {
                   role: 'system',
-                  content: 'Сен Farab Tour Ұмра туроператорының AI көмекшісісің. Ұшу Шымкенттен тікелей. Хит топтама: DOSTYK PACKAGE (11 күндік). 9 негізгі қызмет кіреді: әуе билеті, ресми виза, 5★ қонақүй, VIP трансфер, ұстаз Әлфараби Сағымбекұлы, тарихи зиярат, швед үстелі 3-4 мезгіл, 2x23кг багаж, қажылар жинағы. Қазақша сыпайы жауап бер және толық кеңес үшін WhatsApp-қа бағытта.'
+                  content: 'Сен Farab Tour Ұмра туроператорының AI көмекшісісің. Ұшу Шымкенттен тікелей. Хит топтама: DOSTYK PACKAGE (11 күндік). 9 негізгі қызмет: әуе билеті, ресми виза, 5★ қонақүй, VIP трансфер, ұстаз Әлфараби Сағымбекұлы, тарихи зиярат, швед үстелі 3-4 мезгіл, 2x23кг багаж, қажылар жинағы. Қазақша сыпайы жауап бер. МАНЫЗДЫ: Ешқашан решетка (#, ##, ###) таңбаларын қолданба! Тақырыптарды жай ғана қалың әріппен немесе нөмірлеп жаз. Толық кеңес үшін WhatsApp-қа бағытта.'
                 },
                 { role: 'user', content: question }
               ]
@@ -2328,12 +2391,7 @@
 
       if (answer) {
         currentAiAnswer = answer;
-        // Format markdown bolding and linebreaks
-        const formatted = answer
-          .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>')
-          .replace(/\n\n/g, '<div class="h-2"></div>')
-          .replace(/\n/g, '<br/>');
-        answerBox.innerHTML = formatted;
+        answerBox.innerHTML = formatAiResponse(answer);
 
         // Configure WhatsApp button
         const defaultWaText = `Ассалаумағалейкум! Farab Tour сайтындағы AI кеңесшіден мына сұрақты қойған едім:\n\n«${question}»\n\nОсы бойынша толық мәлімет беріп, орын брондауға көмектесесіз бе?`;
