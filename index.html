@@ -174,7 +174,7 @@
       text-shadow: none !important;
     }
 
-    /* Background video & canvas layers (GPU Hardware Accelerated - Distant Wide-Angle Perspective) */
+    /* Background video layers (GPU Hardware Accelerated - Full Screen Edge-to-Edge) */
     .bg-layer {
       position: absolute;
       top: 0;
@@ -183,7 +183,7 @@
       height: 100%;
       object-fit: cover;
       object-position: center center;
-      transform: scale(0.88);
+      transform: scale(1);
       transform-origin: center center;
       backface-visibility: hidden;
       perspective: 1000px;
@@ -192,7 +192,7 @@
     }
     @media (max-width: 768px) {
       .bg-layer {
-        transform: scale(0.92);
+        transform: scale(1);
       }
     }
 
