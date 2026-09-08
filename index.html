@@ -103,18 +103,18 @@
 
     /* Glassmorphism Styles (Translucent, Radiant & Luxurious - Allows videos to shine through) */
     .glass-emerald {
-      background: rgba(2, 24, 18, 0.45);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+      background: rgba(2, 24, 18, 0.32);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(212, 175, 55, 0.38);
+      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.12);
     }
     .glass-dostyk {
-      background: rgba(2, 24, 18, 0.48);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1.5px solid rgba(212, 175, 55, 0.55);
-      box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.6), 0 0 35px rgba(212, 175, 55, 0.15);
+      background: rgba(2, 24, 18, 0.35);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(212, 175, 55, 0.5);
+      box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.55), 0 0 35px rgba(212, 175, 55, 0.15);
     }
     .glass-light {
       background: rgba(255, 255, 255, 0.92);
@@ -124,17 +124,17 @@
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
     }
     .glass-gold {
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.25) 0%, rgba(2, 24, 18, 0.55) 100%);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(212, 175, 55, 0.5);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    }
-    .glass-inner {
-      background: rgba(1, 20, 15, 0.40);
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.18) 0%, rgba(2, 24, 18, 0.40) 100%);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(212, 175, 55, 0.35);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .glass-inner {
+      background: rgba(1, 20, 15, 0.28);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(212, 175, 55, 0.3);
     }
 
     /* Universal High-Contrast Text Shadows & Typography (Ensures 100% legibility over any video frame) */
@@ -384,14 +384,14 @@
       
       <div id="hero-content" class="w-full flex flex-col items-center transition-opacity duration-300">
         <!-- Bismillah Arabic Calligraphy Badge -->
-        <div class="drift-1 mb-6 px-7 py-3 rounded-full bg-[#021811]/45 backdrop-blur-xl border border-gold-400/50 inline-flex items-center gap-3 shadow-2xl">
+        <div class="drift-1 mb-6 px-7 py-3 rounded-full bg-[#021811]/30 backdrop-blur-lg border border-gold-400/50 inline-flex items-center gap-3 shadow-2xl">
           <span class="text-gold-400 font-serif text-base sm:text-lg tracking-widest font-semibold">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
           <span class="w-2 h-2 rounded-full bg-gold-400 animate-ping"></span>
           <span class="text-xs sm:text-sm uppercase tracking-widest text-gold-200 font-bold">Farab Tour 2026</span>
         </div>
 
         <!-- Main Heading & Subtitle Box with Lighter Glass Backdrop -->
-        <div class="max-w-5xl mx-auto space-y-6 bg-[#021811]/40 backdrop-blur-xl border border-gold-400/40 rounded-3xl p-6 sm:p-12 shadow-2xl">
+        <div class="max-w-5xl mx-auto space-y-6 bg-[#021811]/28 backdrop-blur-xl border border-gold-400/40 rounded-3xl p-6 sm:p-12 shadow-2xl">
           <h1 class="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.2] text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
             Меккеге бару ғана емес, <br />
             <span class="text-gold-gradient font-extrabold italic">жүрекпен баруға</span> дайындалу
@@ -408,7 +408,7 @@
               <i data-lucide="plane-takeoff" class="w-5 h-5"></i>
             </a>
 
-            <button onclick="openConsultationModal()" class="w-full sm:w-auto px-9 py-4 rounded-full bg-[#021811]/60 hover:bg-emerald-900/80 text-white font-bold text-sm sm:text-base tracking-wider uppercase border border-gold-400/60 hover:border-gold-300 shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
+            <button onclick="openConsultationModal()" class="w-full sm:w-auto px-9 py-4 rounded-full bg-[#021811]/45 hover:bg-emerald-900/70 text-white font-bold text-sm sm:text-base tracking-wider uppercase border border-gold-400/60 hover:border-gold-300 shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
               <i data-lucide="message-circle" class="w-5 h-5 text-gold-400"></i>
               <span>Менеджермен кеңесу</span>
             </button>
@@ -418,7 +418,7 @@
         <!-- Floating Badges (Anti-Gravity Drifting around Hero) -->
         <div class="w-full max-w-5xl mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
           
-          <div class="drift-2 bg-[#021811]/45 backdrop-blur-xl p-5 sm:p-6 rounded-2xl flex items-center gap-4 border border-gold-400/40 shadow-2xl">
+          <div class="drift-2 bg-[#021811]/30 backdrop-blur-lg p-5 sm:p-6 rounded-2xl flex items-center gap-4 border border-gold-400/40 shadow-2xl">
             <div class="w-13 h-13 p-3 rounded-2xl bg-gold-500/20 border border-gold-400/50 flex items-center justify-center text-gold-400 shrink-0">
               <i data-lucide="heart-handshake" class="w-6 h-6"></i>
             </div>
@@ -428,7 +428,7 @@
             </div>
           </div>
 
-          <div class="drift-3 bg-[#021811]/45 backdrop-blur-xl p-5 sm:p-6 rounded-2xl flex items-center gap-4 border border-gold-400/40 shadow-2xl">
+          <div class="drift-3 bg-[#021811]/30 backdrop-blur-lg p-5 sm:p-6 rounded-2xl flex items-center gap-4 border border-gold-400/40 shadow-2xl">
             <div class="w-13 h-13 p-3 rounded-2xl bg-gold-500/20 border border-gold-400/50 flex items-center justify-center text-gold-400 shrink-0">
               <i data-lucide="book-open-check" class="w-6 h-6"></i>
             </div>
@@ -438,7 +438,7 @@
             </div>
           </div>
 
-          <div class="drift-4 bg-[#021811]/45 backdrop-blur-xl p-5 sm:p-6 rounded-2xl flex items-center gap-4 border border-gold-400/40 shadow-2xl">
+          <div class="drift-4 bg-[#021811]/30 backdrop-blur-lg p-5 sm:p-6 rounded-2xl flex items-center gap-4 border border-gold-400/40 shadow-2xl">
             <div class="w-13 h-13 p-3 rounded-2xl bg-gold-500/20 border border-gold-400/50 flex items-center justify-center text-gold-400 shrink-0">
               <i data-lucide="shield-check" class="w-6 h-6"></i>
             </div>
