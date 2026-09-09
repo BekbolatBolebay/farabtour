@@ -85,6 +85,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
+  <!-- YouTube Iframe API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
   <style>
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
@@ -1532,6 +1535,22 @@
                 allowfullscreen
                 loading="eager"
               ></iframe>
+
+              <!-- Floating sound toggle badge on top-left of video -->
+              <button
+                id="yt-live-sound-overlay"
+                onclick="toggleYtLiveMute()"
+                class="absolute top-3 left-3 z-20 flex items-center gap-2 bg-emerald-950/90 border border-gold-400/60 hover:bg-gold-500 hover:text-emerald-950 text-gold-300 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-2xl transition-all duration-300 backdrop-blur-md active:scale-95 group"
+                title="Дыбысты қосу немесе өшіру"
+              >
+                <span class="relative flex h-2.5 w-2.5">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-gold-400"></span>
+                </span>
+                <i id="yt-overlay-sound-icon" data-lucide="volume-x" class="w-4 h-4 text-gold-400 group-hover:text-emerald-950"></i>
+                <span id="yt-overlay-sound-text">Дауысын қосу (Live)</span>
+              </button>
+
               <!-- Live Video badge -->
               <div class="absolute bottom-3 right-3 bg-black/85 backdrop-blur-md px-3.5 py-1.5 rounded-lg border border-gold-400/40 text-xs font-bold text-gold-300 flex items-center gap-2 pointer-events-none z-10 shadow-xl">
                 <span class="relative flex h-2.5 w-2.5">
@@ -1984,9 +2003,31 @@
     requestAnimationFrame(scrollTick);
 
     // =========================================================================
-    // FOOTER KAABA YOUTUBE LIVE CONTROLS & UNINTERRUPTED STREAMING
+    // FOOTER KAABA YOUTUBE LIVE CONTROLS & CONTINUOUS LIVE AUDIO
     // =========================================================================
+    let ytLivePlayer = null;
     let ytLiveMuted = true;
+
+    // Official YouTube Iframe Player API hook
+    window.onYouTubeIframeAPIReady = function() {
+      try {
+        ytLivePlayer = new YT.Player('footer-live-frame', {
+          events: {
+            onReady: function(e) {
+              try {
+                e.target.playVideo();
+                if (!ytLiveMuted) {
+                  e.target.unMute();
+                  e.target.setVolume(100);
+                }
+              } catch (err) {}
+            }
+          }
+        });
+      } catch (err) {
+        console.warn('YouTube API init notice:', err);
+      }
+    };
 
     function sendYtCommand(func, args) {
       const iframe = document.getElementById('footer-live-frame');
@@ -1999,22 +2040,56 @@
       }
     }
 
-    function toggleYtLiveMute() {
-      const muteText = document.getElementById('footer-vid-mutetext');
-      const muteIcon = document.getElementById('footer-vid-muteicon');
-      if (ytLiveMuted) {
+    function setLiveSoundState(unmuted) {
+      ytLiveMuted = !unmuted;
+      if (unmuted) {
+        // Unmute via YouTube API object
+        if (ytLivePlayer && typeof ytLivePlayer.unMute === 'function') {
+          try {
+            ytLivePlayer.unMute();
+            ytLivePlayer.setVolume(100);
+            ytLivePlayer.playVideo();
+          } catch(e) {}
+        }
+        // Direct postMessage fallback
         sendYtCommand('unMute');
         sendYtCommand('setVolume', [100]);
-        ytLiveMuted = false;
+        sendYtCommand('playVideo');
+
+        // Update main button
+        const muteText = document.getElementById('footer-vid-mutetext');
+        const muteIcon = document.getElementById('footer-vid-muteicon');
         if (muteText) muteText.textContent = 'Дыбысты өшіру';
         if (muteIcon) muteIcon.setAttribute('data-lucide', 'volume-x');
+
+        // Update video overlay badge
+        const overlayText = document.getElementById('yt-overlay-sound-text');
+        const overlayIcon = document.getElementById('yt-overlay-sound-icon');
+        if (overlayText) overlayText.textContent = '🔊 Дыбыс қосулы';
+        if (overlayIcon) overlayIcon.setAttribute('data-lucide', 'volume-2');
       } else {
+        if (ytLivePlayer && typeof ytLivePlayer.mute === 'function') {
+          try {
+            ytLivePlayer.mute();
+          } catch(e) {}
+        }
         sendYtCommand('mute');
-        ytLiveMuted = true;
+
+        const muteText = document.getElementById('footer-vid-mutetext');
+        const muteIcon = document.getElementById('footer-vid-muteicon');
         if (muteText) muteText.textContent = 'Дыбысын қосу';
         if (muteIcon) muteIcon.setAttribute('data-lucide', 'volume-2');
+
+        const overlayText = document.getElementById('yt-overlay-sound-text');
+        const overlayIcon = document.getElementById('yt-overlay-sound-icon');
+        if (overlayText) overlayText.textContent = 'Дауысын қосу (Live)';
+        if (overlayIcon) overlayIcon.setAttribute('data-lucide', 'volume-x');
       }
       if (window.lucide) lucide.createIcons();
+    }
+
+    function toggleYtLiveMute() {
+      setLiveSoundState(ytLiveMuted);
     }
 
     function openFooterFullscreen() {
@@ -2027,11 +2102,25 @@
       }
     }
 
-    // Ensure playback starts immediately on load and runs continuously
+    // Auto-unmute on first user touch/click anywhere on page
+    // (Bypasses browser autoplay restrictions seamlessly)
+    function autoEnableLiveSound() {
+      if (ytLiveMuted) {
+        setLiveSoundState(true);
+      }
+      window.removeEventListener('click', autoEnableLiveSound);
+      window.removeEventListener('touchstart', autoEnableLiveSound);
+      window.removeEventListener('keydown', autoEnableLiveSound);
+    }
+    window.addEventListener('click', autoEnableLiveSound, { once: true });
+    window.addEventListener('touchstart', autoEnableLiveSound, { once: true });
+    window.addEventListener('keydown', autoEnableLiveSound, { once: true });
+
+    // Ensure playback starts on load
     window.addEventListener('load', () => {
       setTimeout(() => {
         sendYtCommand('playVideo');
-      }, 800);
+      }, 600);
     });
 
 
